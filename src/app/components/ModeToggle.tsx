@@ -1,7 +1,7 @@
 import { useMode } from '../context/ModeContext';
 import { motion } from 'motion/react';
 import { Code2, MoonStar, Sun, Video } from 'lucide-react';
-import { JSX } from 'react';
+import type { JSX } from 'react';
 
 export const ModeToggle = () => {
   const { mode, setMode, theme, setTheme } = useMode();
@@ -13,6 +13,17 @@ export const ModeToggle = () => {
 
   return (
     <>
+      <motion.a
+        href="#home"
+        className="fixed left-4 top-4 z-50 flex items-center gap-2 rounded-full border border-slate-300/60 bg-white/85 px-2.5 py-1.5 shadow-xl backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-900/80"
+        initial={{ opacity: 0, y: -18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        aria-label="TAN slash ten home"
+      >
+        <span className="pr-1 text-sm font-semibold tracking-wide text-slate-800 dark:text-slate-100">TAN/10</span>
+      </motion.a>
+
       <motion.div
         className="fixed left-1/2 top-4 z-50 w-[min(22rem,calc(100vw-8rem))] -translate-x-1/2 rounded-2xl border border-slate-300/60 bg-white/85 p-2 shadow-xl backdrop-blur-xl dark:border-slate-700/80 dark:bg-slate-900/80"
         initial={{ opacity: 0, y: -18 }}
