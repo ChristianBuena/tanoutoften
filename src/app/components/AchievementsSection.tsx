@@ -1,36 +1,47 @@
 import { useMemo, useState } from 'react';
 import { useMode } from '../context/ModeContext';
 import { AnimatePresence, motion } from 'motion/react';
-import { Award, Star, Trophy, X } from 'lucide-react';
-import developerCertificationsData from '../data/developer-certifications.json';
-import editorCertificationsData from '../data/editor-certifications.json';
+import { Award, ArrowUpRight, X } from 'lucide-react';
+import certificationsData from '../data/certifications.json';
 
 interface Certification {
   id: string;
   title: string;
   category: string;
   year: string;
-  description: string;
-  highlight: string;
-  focus: string;
-  url: string;
+  overview: string;
+  image: string;
+  featured?: boolean;
 }
 
-const developerCertifications = developerCertificationsData as Certification[];
-const editorCertifications = editorCertificationsData as Certification[];
+const certifications = certificationsData as Certification[];
+
+const FEATURED_CERT_IDS = [
+  'iirc-innovation-award-2026',
+  'seo-certified-i-2026',
+  'seo-certified-ii-2026',
+  'batang-techno-programming-2026',
+];
 
 export const AchievementsSection = () => {
   const { mode, theme } = useMode();
   const [selectedCertificationId, setSelectedCertificationId] = useState<string | null>(null);
 
-  const certifications = useMemo(
-    () => (mode === 'developer' ? developerCertifications : editorCertifications),
-    [mode]
-  );
+  const featuredCertifications = useMemo(() => {
+    const selected = FEATURED_CERT_IDS
+      .map((id) => certifications.find((item) => item.id === id))
+      .filter((item): item is Certification => Boolean(item));
+
+    if (selected.length > 0) {
+      return selected;
+    }
+
+    return certifications.filter((item) => item.featured).slice(0, 4);
+  }, []);
 
   const selectedCertification = useMemo(
     () => certifications.find((item) => item.id === selectedCertificationId) ?? null,
-    [certifications, selectedCertificationId]
+    [selectedCertificationId]
   );
 
   return (
@@ -65,29 +76,45 @@ export const AchievementsSection = () => {
             Certifications
           </motion.span>
           <h2 className="mt-4 text-balance text-4xl font-semibold text-slate-950 dark:text-slate-100 md:text-5xl">
-            {mode === 'developer' ? 'Technical Certifications' : 'Creative Certifications'}
+            Featured Certifications
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-600 dark:text-slate-300">
-            Curated credentials and recognitions specific to each discipline.
+            Showing key highlights: IIRC, SEO I, SEO II, and Batang Techno.
           </p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {certifications.map((certification, idx) => (
-            <CertificationCard
+          {featuredCertifications.map((certification, idx) => (
+            <CertificationThumbnailCard
               key={certification.id}
               certification={certification}
               mode={mode}
               delay={idx * 0.08}
-              onClick={() => setSelectedCertificationId(certification.id)}
+              onOpen={() => setSelectedCertificationId(certification.id)}
             />
           ))}
         </div>
+
+        <motion.div
+          className="mt-10 flex justify-center"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1, duration: 0.35 }}
+        >
+          <a
+            href="/certifications"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/75 px-6 py-3 text-sm font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/65 dark:text-slate-100"
+          >
+            Show all cert
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </motion.div>
       </div>
 
       <AnimatePresence>
         {selectedCertification && (
-          <CertificationModal
+          <CertificationImageModal
             certification={selectedCertification}
             mode={mode}
             onClose={() => setSelectedCertificationId(null)}
@@ -98,16 +125,14 @@ export const AchievementsSection = () => {
   );
 };
 
-interface CertificationCardProps {
+interface CertificationThumbnailCardProps {
   certification: Certification;
   mode: 'developer' | 'editor';
   delay: number;
-  onClick: () => void;
+  onOpen: () => void;
 }
 
-const CertificationCard = ({ certification, mode, delay, onClick }: CertificationCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-
+const CertificationThumbnailCard = ({ certification, mode, delay, onOpen }: CertificationThumbnailCardProps) => {
   return (
     <motion.button
       type="button"
@@ -116,91 +141,78 @@ const CertificationCard = ({ certification, mode, delay, onClick }: Certificatio
       viewport={{ once: true }}
       transition={{ delay, duration: 0.35 }}
       whileHover={{ y: -3 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-      className="relative h-full rounded-2xl border border-slate-300/80 bg-white/75 p-6 text-left shadow-sm backdrop-blur-sm transition-colors dark:border-slate-700 dark:bg-slate-900/65"
+      onClick={onOpen}
+      className="group relative h-full rounded-2xl border border-slate-300/80 bg-white/75 p-4 text-left shadow-sm backdrop-blur-sm transition-colors dark:border-slate-700 dark:bg-slate-900/65"
       style={{
-        borderColor:
-          mode === 'developer'
-            ? isHovered
-              ? 'rgba(6, 182, 212, 0.65)'
-              : 'rgba(6, 182, 212, 0.35)'
-            : isHovered
-              ? 'rgba(249, 115, 22, 0.65)'
-              : 'rgba(249, 115, 22, 0.35)',
+        borderColor: mode === 'developer' ? 'rgba(6, 182, 212, 0.35)' : 'rgba(249, 115, 22, 0.35)',
       }}
     >
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div
-          className="rounded-xl p-3"
-          style={{
-            background:
-              mode === 'developer'
-                ? 'linear-gradient(135deg, rgba(6,182,212,0.18), rgba(59,130,246,0.22))'
-                : 'linear-gradient(135deg, rgba(249,115,22,0.18), rgba(251,113,133,0.22))',
-          }}
-        >
-          {mode === 'developer' ? (
-            <Award className="h-5 w-5 text-cyan-600" />
-          ) : (
-            <Trophy className="h-5 w-5 text-orange-500" />
-          )}
+      <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+        <img
+          src={certification.image}
+          alt={certification.title}
+          className="h-56 w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+          loading="lazy"
+        />
+
+        <div className="absolute inset-0 hidden flex-col justify-end bg-gradient-to-t from-black/80 via-black/30 to-black/0 p-4 text-white opacity-0 transition-opacity duration-250 md:flex md:group-hover:opacity-100">
+          <p className="text-sm leading-relaxed">{certification.overview}</p>
+          <span className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/80">Click to open full image</span>
         </div>
-        <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{certification.year}</span>
+
+        <div className="absolute inset-x-0 bottom-0 p-3 md:hidden">
+          <div className="rounded-lg bg-black/65 p-3 text-xs leading-relaxed text-white">{certification.overview}</div>
+        </div>
       </div>
 
-      <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{certification.title}</h3>
-      <p className="mt-1 text-sm font-medium" style={{ color: mode === 'developer' ? '#06b6d4' : '#f97316' }}>
-        {certification.category}
-      </p>
-      <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{certification.description}</p>
-
-      <motion.div
-        className="mt-5 flex items-center gap-2 border-t border-slate-200 pt-4 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-300"
-        animate={{ opacity: isHovered ? 1 : 0.6 }}
-      >
-        <Star className="h-4 w-4" style={{ color: mode === 'developer' ? '#06b6d4' : '#f97316' }} />
-        Click to view details
-      </motion.div>
+      <div className="mt-4 flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{certification.title}</h3>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{certification.category}</p>
+        </div>
+        <span className="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-600 dark:border-slate-600 dark:text-slate-300">
+          {certification.year}
+        </span>
+      </div>
     </motion.button>
   );
 };
 
-interface CertificationModalProps {
+interface CertificationImageModalProps {
   certification: Certification;
   mode: 'developer' | 'editor';
   onClose: () => void;
 }
 
-const CertificationModal = ({ certification, mode, onClose }: CertificationModalProps) => {
+const CertificationImageModal = ({ certification, mode, onClose }: CertificationImageModalProps) => {
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm md:p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
     >
       <motion.div
-        className="relative w-full max-w-2xl rounded-2xl border border-slate-300/80 bg-white p-8 shadow-2xl dark:border-slate-700 dark:bg-slate-950"
-        initial={{ scale: 0.96, opacity: 0 }}
+        className="relative w-full max-w-6xl rounded-2xl border border-slate-300/80 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-950 md:p-6"
+        initial={{ scale: 0.97, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.96, opacity: 0 }}
+        exit={{ scale: 0.97, opacity: 0 }}
         transition={{ duration: 0.22 }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+          aria-label="Close certificate image"
+          className="absolute right-3 top-3 rounded-full bg-white/90 p-2 text-slate-600 transition hover:bg-white hover:text-slate-900 dark:bg-slate-900/90 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
         >
           <X className="h-5 w-5" />
         </button>
 
-        <div className="mb-6">
-          <motion.div
-            className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2"
+        <div className="mb-4 pr-12">
+          <motion.span
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-white"
             animate={{
               background:
                 mode === 'developer'
@@ -208,46 +220,19 @@ const CertificationModal = ({ certification, mode, onClose }: CertificationModal
                   : 'linear-gradient(135deg, #f97316 0%, #fb7185 100%)',
             }}
           >
-            <Award className="h-4 w-4 text-white" />
-            <span className="text-sm font-semibold text-white">{certification.year}</span>
-          </motion.div>
-
-          <h2 className="text-3xl font-semibold text-slate-950 dark:text-slate-100">{certification.title}</h2>
-          <p className="mt-1 text-lg text-slate-600 dark:text-slate-300">{certification.category}</p>
+            <Award className="h-3.5 w-3.5" />
+            {certification.year}
+          </motion.span>
+          <h3 className="mt-3 text-xl font-semibold text-slate-950 dark:text-slate-100 md:text-2xl">{certification.title}</h3>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{certification.overview}</p>
         </div>
 
-        <div className="space-y-5">
-          <div>
-            <h3 className="mb-1 font-semibold text-slate-900 dark:text-slate-100">Overview</h3>
-            <p className="text-slate-600 dark:text-slate-300">{certification.description}</p>
-          </div>
-
-          <div>
-            <h3 className="mb-1 font-semibold text-slate-900 dark:text-slate-100">Key Highlight</h3>
-            <p className="text-slate-600 dark:text-slate-300">{certification.highlight}</p>
-          </div>
-
-          <div>
-            <motion.h3
-              className="mb-1 font-semibold"
-              animate={{ color: mode === 'developer' ? '#06b6d4' : '#f97316' }}
-            >
-              {mode === 'developer' ? 'Technical Focus' : 'Creative Focus'}
-            </motion.h3>
-            <p className="text-slate-600 dark:text-slate-300">{certification.focus}</p>
-          </div>
-
-          <div>
-            <a
-              href={certification.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-sm font-semibold hover:underline"
-              style={{ color: mode === 'developer' ? '#06b6d4' : '#f97316' }}
-            >
-              View certificate overview ↗
-            </a>
-          </div>
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
+          <img
+            src={certification.image}
+            alt={certification.title}
+            className="mx-auto max-h-[75vh] w-auto max-w-full object-contain"
+          />
         </div>
       </motion.div>
     </motion.div>

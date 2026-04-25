@@ -1,0 +1,198 @@
+[
+  {
+    "id": "iirc-innovation-award-2026",
+    "title": "IIRC 2026 Innovation Award",
+    "category": "International Interdisciplinary Research Conference",
+    "year": "2026",
+    "overview": "Innovation Award recognition at IIRC 2026 as co-author in an international research conference.",
+    "image": "/certs/IIRC.png",
+    "featured": true
+  },
+  {
+    "id": "seo-certified-i-2026",
+    "title": "SEO Certified I",
+    "category": "HubSpot Academy",
+    "year": "2026",
+    "overview": "SEO certification validating foundational search optimization knowledge and practical application.",
+    "image": "/certs/SEO I.png",
+    "featured": true
+  },
+  {
+    "id": "seo-certified-ii-2026",
+    "title": "SEO Certified II",
+    "category": "HubSpot Academy",
+    "year": "2026",
+    "overview": "Advanced SEO certification focused on sustained optimization strategy and performance improvements.",
+    "image": "/certs/SEO II.png",
+    "featured": true
+  },
+  {
+    "id": "batang-techno-programming-2026",
+    "title": "Batang Techno Programming Challenge",
+    "category": "Participation",
+    "year": "2026",
+    "overview": "Participation certificate for Batang Techno focused on building the minds of tomorrow's innovators.",
+    "image": "/certs/batang-techno.png",
+    "featured": true
+  },
+  {
+    "id": "css-academic-excellence-rank-7-2024",
+    "title": "Academic Excellence Award (Rank 7)",
+    "category": "Academic Recognition",
+    "year": "2024",
+    "overview": "Recognized as Rank 7 during 2nd-year 1st semester for strong academic performance.",
+    "image": "/certs/acad-excel.jpeg"
+  },
+  {
+    "id": "css-academic-excellence-rank-4-2025",
+    "title": "Academic Excellence Award (Rank 4)",
+    "category": "Academic Recognition",
+    "year": "2025",
+    "overview": "Top performing student recognition during 3rd-year 2nd semester.",
+    "image": "/certs/acad-excel2.jpeg"
+  },
+  {
+    "id": "css-academic-excellence-rank-19-2024",
+    "title": "Academic Excellence Award (Rank 19)",
+    "category": "Academic Recognition",
+    "year": "2024",
+    "overview": "Recognized as Rank 19 during 2nd-year 2nd semester of the academic year.",
+    "image": "/certs/acad-excel3.jpeg"
+  },
+  {
+    "id": "asin-at-ilaw-team-building-2025",
+    "title": "Asin at Ilaw 2025",
+    "category": "Participation",
+    "year": "2025",
+    "overview": "Participation in team building activity themed around adaptability, authenticity, and leadership.",
+    "image": "/certs/asin-at-ilaw.jpeg"
+  },
+  {
+    "id": "local-youth-benchmarking-2024",
+    "title": "Local Youth Development Benchmarking",
+    "category": "Participation",
+    "year": "2024",
+    "overview": "Participation in training and benchmarking for comprehensive youth development planning.",
+    "image": "/certs/baguio.jpeg"
+  },
+  {
+    "id": "brigada-eskwela-2025",
+    "title": "Brigada Eskwela 2025",
+    "category": "Recognition",
+    "year": "2025",
+    "overview": "Recognition for active participation and support in the Brigada Eskwela community extension program.",
+    "image": "/certs/brigada.jpeg"
+  },
+  {
+    "id": "techno-expo-excellence-innovation-2025",
+    "title": "Excellence in Innovation Award",
+    "category": "Techno Expo",
+    "year": "2025",
+    "overview": "Award for creativity and technical excellence during Techno Expo 2025.",
+    "image": "/certs/excellence in innovation.jpeg"
+  },
+  {
+    "id": "css-software-expo-2026",
+    "title": "CSS Software Expo 2026",
+    "category": "Participation",
+    "year": "2026",
+    "overview": "Presented project contribution in CSS Software Expo 2026.",
+    "image": "/certs/innovation.jpeg"
+  },
+  {
+    "id": "ipcom-head-recognition-jpg",
+    "title": "Information and Publication Head Recognition",
+    "category": "Office and Leadership",
+    "year": "2024",
+    "overview": "Recognition for service as Information and Publication Committee Head.",
+    "image": "/certs/ipcom.jpg"
+  },
+  {
+    "id": "ipcom-head-recognition-jpeg",
+    "title": "Information and Publication Head Recognition (Variant)",
+    "category": "Office and Leadership",
+    "year": "2024",
+    "overview": "Alternative copy of Information and Publication Head recognition certificate.",
+    "image": "/certs/ipcom.jpeg"
+  },
+  {
+    "id": "ipcom-head-recognition-alt-1",
+    "title": "Information and Publication Head Recognition (Alt 1)",
+    "category": "Office and Leadership",
+    "year": "2024",
+    "overview": "Additional copy of Information and Publication Head recognition certificate.",
+    "image": "/certs/ipcom2.jpeg"
+  },
+  {
+    "id": "ipcom-oath-office-2025",
+    "title": "Information and Publication Head Oath of Office",
+    "category": "Office and Leadership",
+    "year": "2025",
+    "overview": "Certificate confirming oath of office for Information and Publication Head role.",
+    "image": "/certs/ipcom4.jpeg"
+  },
+  {
+    "id": "ipcom-head-recognition-alt-2",
+    "title": "Information and Publication Head Recognition (Alt 2)",
+    "category": "Office and Leadership",
+    "year": "2024",
+    "overview": "Additional archived copy of Information and Publication Head recognition certificate.",
+    "image": "/certs/ipcome3.jpeg"
+  },
+  {
+    "id": "limitless-youth-coaching-2024",
+    "title": "Power of Youth Coaching Completion",
+    "category": "Training Completion",
+    "year": "2024",
+    "overview": "Completed youth-focused peer life coaching training on mental and psychosocial support.",
+    "image": "/certs/limitless.jpeg"
+  },
+  {
+    "id": "paglaum-seminar-2025",
+    "title": "Paglaum Suicide Prevention Campaign",
+    "category": "Participation",
+    "year": "2025",
+    "overview": "Active participation in suicide prevention month campaign seminar.",
+    "image": "/certs/paglaum.jpeg"
+  },
+  {
+    "id": "peer-coding-mentor-jpeg",
+    "title": "Peer Coding Session Mentor",
+    "category": "Appreciation",
+    "year": "2025",
+    "overview": "Served as mentor during the Peer Coding Session: Recursia Peer Up.",
+    "image": "/certs/peer-coding.jpeg"
+  },
+  {
+    "id": "peer-coding-mentor-jpg",
+    "title": "Peer Coding Session Mentor (Alt)",
+    "category": "Appreciation",
+    "year": "2025",
+    "overview": "Alternate copy of Peer Coding Session mentor appreciation certificate.",
+    "image": "/certs/peer-coding.jpg"
+  },
+  {
+    "id": "peer-solution-pfar-2024",
+    "title": "Peer Solution Project PFAR Training",
+    "category": "Training Completion",
+    "year": "2024",
+    "overview": "Completed three-day psychological first aid responders intensive training.",
+    "image": "/certs/pfar.jpeg"
+  },
+  {
+    "id": "short-film-festival-judge-2025",
+    "title": "Short Film Festival Judge",
+    "category": "Appreciation",
+    "year": "2025",
+    "overview": "Served as judge for 21st Century Literature short film festival.",
+    "image": "/certs/short-film-judge.jpg"
+  },
+  {
+    "id": "techno-expo-outstanding-presenter-2025",
+    "title": "Outstanding Presenter Award",
+    "category": "Techno Expo",
+    "year": "2025",
+    "overview": "Awarded for clear and engaging presentation performance during Techno Expo 2025.",
+    "image": "/certs/techno-expo.jpg"
+  }
+]
