@@ -4,7 +4,6 @@ import { ModeToggle } from './components/ModeToggle';
 import { HeroSection } from './components/HeroSection';
 import { OverviewSection } from './components/OverviewSection';
 import { Footer } from './components/Footer';
-import { AllCertificationsPage } from './components/AllCertificationsPage';
 
 const AchievementsSection = lazy(() =>
   import('./components/AchievementsSection').then((module) => ({ default: module.AchievementsSection }))
@@ -25,20 +24,6 @@ const SectionLoader: FC = () => (
 );
 
 export default function App() {
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
-  const normalizedPath = pathname.replace(/\/+$/, '') || '/';
-  const isAllCertificationsPage = normalizedPath === '/certifications';
-
-  if (isAllCertificationsPage) {
-    return (
-      <ModeProvider>
-        <div className="min-h-screen bg-[var(--portfolio-bg)] text-[var(--portfolio-text)] transition-colors duration-500">
-          <AllCertificationsPage />
-        </div>
-      </ModeProvider>
-    );
-  }
-
   return (
     <ModeProvider>
       <div className="min-h-screen bg-[var(--portfolio-bg)] text-[var(--portfolio-text)] transition-colors duration-500">

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useMode } from '../context/ModeContext';
 import { AnimatePresence, motion } from 'motion/react';
-import { Award, ArrowUpRight, X } from 'lucide-react';
+import { Award, ArrowUpRight, Expand, X } from 'lucide-react';
 import certificationsData from '../data/certifications.json';
 
 interface Certification {
@@ -26,6 +26,7 @@ const FEATURED_CERT_IDS = [
 export const AchievementsSection = () => {
   const { mode, theme } = useMode();
   const [selectedCertificationId, setSelectedCertificationId] = useState<string | null>(null);
+  const [isAllCertificationsOpen, setIsAllCertificationsOpen] = useState(false);
 
   const featuredCertifications = useMemo(() => {
     const selected = FEATURED_CERT_IDS
@@ -43,6 +44,16 @@ export const AchievementsSection = () => {
     () => certifications.find((item) => item.id === selectedCertificationId) ?? null,
     [selectedCertificationId]
   );
+
+  const orderedCertifications = useMemo(
+    () => [...certifications].sort((a, b) => Number(b.year) - Number(a.year) || a.title.localeCompare(b.title)),
+    []
+  );
+
+  const closeAllCertifications = () => {
+    setIsAllCertificationsOpen(false);
+    setSelectedCertificationId(null);
+  };
 
   return (
     <section id="achievements" className="relative min-h-screen overflow-hidden px-6 py-24 md:px-8">
@@ -102,15 +113,26 @@ export const AchievementsSection = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.35 }}
         >
-          <a
-            href="/certifications"
+          <button
+            type="button"
+            onClick={() => setIsAllCertificationsOpen(true)}
             className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/75 px-6 py-3 text-sm font-semibold text-slate-800 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/65 dark:text-slate-100"
           >
             Show all cert
             <ArrowUpRight className="h-4 w-4" />
-          </a>
+          </button>
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {isAllCertificationsOpen && (
+          <AllCertificationsModal
+            certifications={orderedCertifications}
+            onOpenCertification={(certificationId) => setSelectedCertificationId(certificationId)}
+            onClose={closeAllCertifications}
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {selectedCertification && (
@@ -122,6 +144,83 @@ export const AchievementsSection = () => {
         )}
       </AnimatePresence>
     </section>
+  );
+};
+
+interface AllCertificationsModalProps {
+  certifications: Certification[];
+  onOpenCertification: (certificationId: string) => void;
+  onClose: () => void;
+}
+
+const AllCertificationsModal = ({ certifications, onOpenCertification, onClose }: AllCertificationsModalProps) => {
+  return (
+    <motion.div
+      className="fixed inset-0 z-40 overflow-y-auto bg-black/65 p-4 backdrop-blur-sm md:p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="mx-auto w-full max-w-7xl rounded-2xl border border-slate-300/80 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-950 md:p-6"
+        initial={{ y: 14, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 14, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="mb-6 flex items-start justify-between gap-3">
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-950 dark:text-slate-100 md:text-3xl">All Certifications</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Browse every certification without leaving the home page.</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close certifications list"
+            className="rounded-full bg-white/90 p-2 text-slate-600 transition hover:bg-white hover:text-slate-900 dark:bg-slate-900/90 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {certifications.map((certification) => (
+            <button
+              key={certification.id}
+              type="button"
+              onClick={() => onOpenCertification(certification.id)}
+              className="group rounded-2xl border border-slate-300/80 bg-white/75 p-4 text-left shadow-sm transition-colors hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900/65 dark:hover:border-slate-500"
+            >
+              <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+                <img
+                  src={certification.image}
+                  alt={certification.title}
+                  className="h-48 w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
+                <div className="absolute right-2 top-2 rounded-md bg-black/60 p-1.5 text-white">
+                  <Expand className="h-3.5 w-3.5" />
+                </div>
+              </div>
+
+              <div className="mt-4 flex items-start justify-between gap-3">
+                <div>
+                  <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100">{certification.title}</h4>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{certification.category}</p>
+                </div>
+                <span className="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-600 dark:border-slate-600 dark:text-slate-300">
+                  {certification.year}
+                </span>
+              </div>
+
+              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{certification.overview}</p>
+            </button>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
